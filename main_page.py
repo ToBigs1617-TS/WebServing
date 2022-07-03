@@ -6,6 +6,6 @@ st.title("Main page")
 st.sidebar.markdown("# Main page")
 st.markdown("## Project demo")
 
-image = Image.open('static/sample.jpg')
+image = Image.open('static/images/sample.jpg')
 
 st.image(image, caption='샘플 이미지..!')
