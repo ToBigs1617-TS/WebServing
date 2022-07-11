@@ -5,6 +5,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime
 import cufflinks as cf
+import pyupbit
 
 # 예시 용도로 호출
 import numpy as np
@@ -25,8 +26,12 @@ start_date = st.sidebar.date_input('please select a start date', datetime(2022, 
 end_date = datetime.now()
 
 # https://coinmarketcap.com
-scraper = CmcScraper(ticker, start_date.strftime('%d-%m-%Y'), end_date.strftime('%d-%m-%Y')) # '%d-%m-%Y'
-df = scraper.get_dataframe()
+# scraper = CmcScraper(ticker, start_date.strftime('%d-%m-%Y'), end_date.strftime('%d-%m-%Y')) # '%d-%m-%Y'
+# df = scraper.get_dataframe()
+
+df = pyupbit.get_ohlcv("KRW-BTC", interval="minute5", count=200)     # 5분봉 데이터
+df.reset_index(inplace=True)
+df.rename(columns={'index':'Date', 'open':'Open', 'high':'High', 'low':'Low', 'close':'Close', 'volume':'Volume', 'value':'Value'}, inplace=True)
 
 
 ### Pattern Recognition
