@@ -1,21 +1,11 @@
 # Model Class
 import pickle
-# import random
-import numpy as np
-import torch
-from torch import nn, optim
-from torch.nn import functional as F
-from torch.optim import Optimizer
-
-# Model Class
-import pickle
 import random
 import numpy as np
 import torch
 from torch import nn, optim
 from torch.nn import functional as F
 from torch.optim import Optimizer
-
 
 class NBeatsNet(nn.Module):
     SEASONALITY_BLOCK = 'seasonality'
@@ -138,7 +128,7 @@ def linear_space(backcast_length, forecast_length, is_forecast=True):
 class Block(nn.Module):
 
     def __init__(self, units, thetas_dim, device, backcast_length=10, forecast_length=5, share_thetas=False,
-                 nb_harmonics=None, dropout_rate=0.2):
+                 nb_harmonics=None, dropout_rate=0.1):
         super(Block, self).__init__()
         self.units = units
         self.thetas_dim = thetas_dim
@@ -161,12 +151,10 @@ class Block(nn.Module):
 
     def forward(self, x):
         x = squeeze_last_dim(x)
-        x = F.relu(self.fc1(x.to(self.device)))
-        # x = self.dropout(x)  # add dropout 
+        x = F.relu(self.fc1(x.to(self.device))) 
         x = F.relu(self.fc2(x))
         x = self.dropout(x)  # add dropout 
         x = F.relu(self.fc3(x))
-        # x = self.dropout(x)  # add dropout 
         x = F.relu(self.fc4(x))
         return x
 

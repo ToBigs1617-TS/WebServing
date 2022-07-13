@@ -3,7 +3,7 @@ import pickle
 import torch
 
 # Preprocessing Upbit Data
-def forecast_preprocess(df, yscaler):
+def forecast_preprocess(data_tmp, yscaler):
     window_size = 144 # 모델 학습시 input_window 144으로 학습함.
     # yscaler = pickle.load(open('/Users/kim_yoonhye/Desktop/TS-컨퍼/github/WebServing/forecast/scaler.pkl', 'rb'))
 
@@ -11,10 +11,7 @@ def forecast_preprocess(df, yscaler):
     # data_tmp.reset_index(inplace=True)
 
     # data_tmp.rename(columns={'index':'date'}, inplace=True)
-    data_tmp = df[['Date', 'Close']]
-    data_tmp.set_index('Date', inplace=True)
 
-    data_tmp = data_tmp.iloc[-window_size:, :]
     # data_tmp.shape
 
     # scaling 

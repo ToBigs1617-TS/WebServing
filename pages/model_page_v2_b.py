@@ -1,5 +1,7 @@
 # Contents of ~/my_app/pages/page_2.py
 import streamlit as st
+from streamlit_autorefresh import st_autorefresh
+
 # from cryptocmd import CmcScraper
 # import plotly.express as px
 # import plotly.graph_objects as go
@@ -21,7 +23,8 @@ from forecast.utils import *
 # from forecast.preprocess import forecast_preprocess
 
 backend_address = "http://0.0.0.0:50"
-window_size = 50 # 모델 학습시 input_window 50으로 학습함.
+window_size = 144
+# window_size = 50 # 모델 학습시 input_window 50으로 학습함.
 yscaler = pickle.load(open('/Users/kim_yoonhye/Desktop/TS-컨퍼/github/WebServing/forecast/scaler.pkl', 'rb'))
 
 st.set_page_config(page_icon='📈' ,layout="wide")
@@ -33,28 +36,57 @@ st.set_page_config(page_icon='📈' ,layout="wide")
 df = pyupbit.get_ohlcv("KRW-BTC", interval="minute5", count=200)     # 5분봉 데이터
 df.reset_index(inplace=True)
 df.rename(columns={'index':'Date', 'open':'Open', 'high':'High', 'low':'Low', 'close':'Close', 'volume':'Volume', 'value':'Value'}, inplace=True)
-
-def get_forecast(df):
+# true = yscaler.inverse_transform(df['Close'].values.reshape(-1, 1))
+true = df['Close'].values.reshape(-1, 1)
+# def get_forecast(df):
     # st.write(type(df))
-    data = df.to_json()
-    print(type(data))
+    # data_tmp = df[['Date', 'Close']]
+    # data_tmp.set_index('Date', inplace=True)
+
+    # data_tmp = data_tmp.iloc[-window_size:, :]
+    # data = data_tmp.to_json(orient="records")
+
+    # print(df.dtypes)
+    # print(df.Date)
+    # df['Date'] = df['Date'].dt.strftime('%Y-%m-%d %H:%M:%S')
+    # print(df.dtypes)
+    # print(type(data))
+    # print(data)
+    # data = data_tmp.to_dict()
+
+def get_recognition():
+    response = requests.get(
+        url=f"{backend_address}/recognition", 
+        # verify=False,
+        # json=data,
+        )
+    pred = response.json()['pred']
+
+    return pred
+
+def get_forecast():
+
+    data_tmp = df[['Date', 'Close']]
+    data_tmp.set_index('Date', inplace=True)
+    data_tmp = data_tmp.iloc[-window_size:, :]
 
     response = requests.get(
         url=f"{backend_address}/forecast", 
-        verify=False,
-        json=data
+        # verify=False,
+        # json=data,
         )
-
-    print(response.json())
-    st.write(response.json())
+    # st.write("ㅗ")
+    # st.write(response)
+    # print(response.json())
+    # st.write(response.json())
     y_pred = response.json()['y_pred']
     trend = response.json()['trend']
     seasonality = response.json()['seasonality']
-    true = yscaler.inverse_transform(df['Close'].values.reshape(-1, 1))
+    # true = yscaler.inverse_transform(df['Close'].values.reshape(-1, 1))
     
-    fig = plot_prediction(true, y_pred, trend, seasonality)
+    fig = plot_prediction(true, y_pred, trend, seasonality, data_tmp)
     st.plotly_chart(fig, use_container_width=True)
-    # return y_pred, trend, seasonality
+    return y_pred, trend, seasonality
 
 ### Pattern Recognition 
 # 결정할 것
@@ -73,6 +105,7 @@ def main():
 # https://coinmarketcap.com
 # scraper = CmcScraper(ticker, start_date.strftime('%d-%m-%Y'), end_date.strftime('%d-%m-%Y')) # '%d-%m-%Y'
 # df = scraper.get_dataframe()
+    st_autorefresh(interval=300000, limit=100, key="counter") # 5분 간격으로 새로고침. 약 8시간 동안 auto-fresh
 
     st.title("Model page") # 페이지 제목 뭐로 하죠??
     st.sidebar.markdown("# Model page ")
@@ -145,9 +178,10 @@ def main():
         col1.subheader('Raw data')
         col1.write(df)
 
+
     col2.subheader("Probabilities")
     with st.spinner("In progress.."): # 문구 위치 어디로
-        # time.sleep(2)
+        pattern_pred = get_recognition()
         col2.write(f'Rising Wedge\n : {prob_sample[0][0]:.2f}')
         col2.write(f'Falling Wedge : {prob_sample[1][0]:.2f}')
         col2.write(f'Ascending Triangle : {prob_sample[2][0]:.2f}')
@@ -169,7 +203,7 @@ def main():
 
     # st.plotly_chart(fig_close)
     with st.spinner("forecasting..."):
-        get_forecast(df)
+        get_forecast()
 
 if __name__ == "__main__":
     main()
