@@ -8,6 +8,9 @@ from matplotlib import pyplot as plt
 
 import cufflinks as cf
 import pyupbit
+import mpl_finance
+from tensorflow import keras
+
 import requests
 import sys
 import os
@@ -90,7 +93,7 @@ def main():
         
     ### Pattern Recognition 
     st.header("Pattern Recognition")
-    st.write("현재 시점을 기준으로 가장 유사한 패턴을 감지합니다.")
+    st.write("Rising Wedge, Falling Wedge와 같은 매매에 적합한 패턴 5가지를 탐지하기 위해 2D CNN을 사용하여 분류를 시행합니다.")
     
     # Pattern Explanation Expander
     with st.expander("pattern explanation"):
@@ -130,11 +133,63 @@ def main():
 
 
     with st.spinner("In progress.."):
-        col1, col2 = st.columns([3,1])
-        col1.subheader("Bitcoin Prices")
-        col1.plotly_chart(fig, use_container_width=True)
+        st.subheader("Bitcoin Prices")
+        st.plotly_chart(fig, use_container_width=True)
 
         pattern_pred, heatmap = get_recognition()
+    
+        # Grad-CAM
+        # st.subheader("XAI")
+    
+        # fig2 = plt.figure(figsize=(30,4))
+        # plt.imshow(heatmap)
+        # plt.axis('off')
+        # st.pyplot(fig2)
+
+        ## Grad-CAM
+        # 전체 candlestick image (200개)
+        fig = plt.figure(figsize=(30,10))
+        ax = fig.add_subplot(111)
+        plt.xlim(-20, 220)
+        mpl_finance.candlestick2_ohlc(ax, df['Open'], df['High'], df['Low'], df['Close'], width=0.5, colorup='r', colordown='b')
+        
+        # 마지막 60개 candlestick image
+        fig2 = plt.figure(figsize=(30,10))
+        ax2 = fig2.add_subplot(111)
+        mpl_finance.candlestick2_ohlc(ax2, df[-60:]['Open'], df[-60:]['High'], df[-60:]['Low'], df[-60:]['Close'], width=0.5, colorup='r', colordown='b')
+        fig2.canvas.draw()
+        ary_60 = np.array(fig2.canvas.renderer._renderer)
+
+        # 앞 140개 candlestick image
+        fig3 = plt.figure(figsize=(30,10))
+        ax3 = fig3.add_subplot(111)
+        plt.xlim(0, 207)
+        plt.axis('off')
+        mpl_finance.candlestick2_ohlc(ax3, df[:140]['Open'], df[:140]['High'], df[:140]['Low'], df[:140]['Close'], width=0.5, colorup='r', colordown='b')
+        fig3.canvas.draw()
+        ary_140 = np.array(fig3.canvas.renderer._renderer)
+
+        xai_60 = keras.preprocessing.image.array_to_img(ary_60)
+        w, h = xai_60.size
+
+        # heatmap -> array
+        fig4 = plt.figure(figsize=(10,10))
+        plt.imshow(heatmap)
+        plt.xlim(-230, 110)
+        plt.ylim(-130, 200)
+        plt.axis('off')
+
+        fig4.canvas.draw()
+        heatmap_ary = np.array(fig4.canvas.renderer._renderer)
+        heatmap = keras.preprocessing.image.array_to_img(heatmap_ary)
+        heatmap = heatmap.resize((w, h))
+
+        heatmap = keras.preprocessing.image.img_to_array(heatmap)
+
+        superimposed_img = heatmap + ary_140
+        superimposed_img = keras.preprocessing.image.array_to_img(superimposed_img)
+        st.subheader("XAI: Grad-CAM")
+        st.image(superimposed_img)
 
         # Alert Box
         thresh = 0.8
@@ -149,15 +204,6 @@ def main():
             st.warning(f"**Descending Triangle** 패턴과 가장 유사합니다.")
         if symmetric_triangle == True and pattern_pred[0][4] >= thresh:
             st.warning(f"**Symmetric Triangle** 패턴과 가장 유사합니다.")
-    
-        # Grad-CAM
-        col2.subheader("XAI")
-    
-        fig2 = plt.figure(figsize=(30,4))
-        plt.imshow(heatmap)
-        plt.axis('off')
-        col2.pyplot(fig2)
-
 
     # Raw Data
     if st.checkbox('Show raw data'):
@@ -168,7 +214,7 @@ def main():
 
     ### Forecasting Stock Prices
     st.header("Forecasting Bitcoin Price")
-    st.write("현시점부터 4시간 후까지의 종가를 예측합니다.")
+    st.write("경향성(Trend)과 계절성(Seasonality)과 같은 시계열 특징을 분석하는 해석 가능한 딥러닝 아키텍처인 Nbeats를 학습하여 향후 4시간을 예측합니다.")
 
     with st.spinner("forecasting..."):
         get_forecast()

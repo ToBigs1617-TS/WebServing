@@ -26,7 +26,7 @@ yscaler = pickle.load(open('/Users/kim_yoonhye/Desktop/TS-컨퍼/github
 
 
 def load_recognition_model():
-    model = tf.keras.models.load_model('../recognition/Model.pt')
+    model = tf.keras.models.load_model('./recognition/Model.pt')
     return model
 
 def load_forecast_model():
@@ -41,7 +41,7 @@ def load_forecast_model():
 
 @app.get("/recognition")
 def get_recognition():
-    ## 01. 데이터 load
+    ### 01. 데이터 load & 입력 전처리 코드
     df = pyupbit.get_ohlcv("KRW-BTC", interval="minute5", count=60)
     fig = plt.figure(figsize=(8,4))
     ax = fig.add_subplot(111)
@@ -57,6 +57,8 @@ def get_recognition():
     pred = model.predict(X) # 각 패턴에 대한 확률값 반환
     
     heatmap = show_heatmap(model, X)
+    
+    # heatmap = Grad_CAM(model, df, 'target_layer')
 
     return JSONResponse(
         content={
