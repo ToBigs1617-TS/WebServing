@@ -56,8 +56,7 @@ streamlit run frontend/main_page.py
 <img width="958" alt="image" src="https://user-images.githubusercontent.com/56261032/179317219-20da2ccc-c2bc-44fb-b16a-074de1039471.png">
 
 ### XAI
-<img width="958" alt="image" src="https://user-images.githubusercontent.com/56261032/179317117-8118b7e7-d5ab-48e2-9c71-d8cf3bf74156.png">
-
+<img width="960" alt="image" src="https://user-images.githubusercontent.com/56261032/179317578-ac839c46-07d1-4698-a0bd-87e5b540236e.png">
 
 ## Forecasting Bitcoin Price
 <img width="945" alt="image" src="https://user-images.githubusercontent.com/56261032/179317333-de1e1cf4-88b6-4bb0-989e-8d9a3c69354c.png">
