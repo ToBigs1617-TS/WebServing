@@ -7,9 +7,9 @@
 .
 ├── frontend
 │   ├── main_page.py
-│   ├── pages
-│   │   └── model_page.py
-│   └── images
+│   └── pages
+│       └── model_page.py
+│   
 │  
 ├── backend
 │   └── main.py
