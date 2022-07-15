@@ -54,8 +54,6 @@ streamlit run frontend/main_page.py
 # Demo
 ## Pattern Recognition
 <img width="958" alt="image" src="https://user-images.githubusercontent.com/56261032/179317219-20da2ccc-c2bc-44fb-b16a-074de1039471.png">
-
-### XAI
 <img width="960" alt="image" src="https://user-images.githubusercontent.com/56261032/179317578-ac839c46-07d1-4698-a0bd-87e5b540236e.png">
 
 ## Forecasting Bitcoin Price
