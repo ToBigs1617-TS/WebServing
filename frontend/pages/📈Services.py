@@ -23,7 +23,7 @@ from utils import *
 
 backend_address = "http://0.0.0.0:50"
 window_size = 144
-yscaler = pickle.load(open('/Users/kim_yoonhye/Desktop/TS-컨퍼/github/WebServing/forecast/scaler.pkl', 'rb'))
+yscaler = pickle.load(open('/forecast/scaler.pkl', 'rb'))
 
 st.set_page_config(page_icon='📈' ,layout="wide")
 
