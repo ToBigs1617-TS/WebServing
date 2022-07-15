@@ -69,8 +69,8 @@ def main():
     # 5분 간격으로 새로고침. 약 8시간 동안 auto-fresh
     st_autorefresh(interval=300000, limit=100, key="counter")
 
-    st.title("Model page") # 페이지 제목 뭐로 하죠??
-    st.sidebar.markdown("# Model page ")
+    st.title("Services") # 페이지 제목 뭐로 하죠??
+    st.sidebar.markdown("# Services")
     # st.sidebar.header('Menu')
 
     # Ticker / Startdate 설정
@@ -93,7 +93,7 @@ def main():
         
     ### Pattern Recognition 
     st.header("Pattern Recognition")
-    st.write("Rising Wedge, Falling Wedge와 같은 매매에 적합한 패턴 5가지를 탐지하기 위해 2D CNN을 사용하여 분류를 시행합니다.")
+    st.write("매매에 적합한 5가지 패턴을 탐지하기 위해 2D CNN을 사용하여 분류를 시행합니다.")
     
     # Pattern Explanation Expander
     with st.expander("pattern explanation"):
@@ -176,7 +176,7 @@ def main():
         fig4 = plt.figure(figsize=(10,10))
         plt.imshow(heatmap)
         plt.xlim(-230, 110)
-        plt.ylim(-130, 200)
+        plt.ylim(-115, 200)
         plt.axis('off')
 
         fig4.canvas.draw()
