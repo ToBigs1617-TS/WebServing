@@ -15,7 +15,7 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))))
 from forecast.model import *
-from forecast.utils import *
+from utils import *
 
 
 backend_address = "http://0.0.0.0:50"
@@ -94,29 +94,27 @@ def main():
     
     # Pattern Explanation Expander
     with st.expander("pattern explanation"):
-        col1, col2 = st.columns([1,1])
-        _, ccol2, _, ccol4, _ = st.columns([1,1,1,1,1])
+        _, col2, _, col4, _ = st.columns([1,1,1,1,1])
         
-        col1.markdown("<h4 style='text-align: center;'>Ascending Triangle</h4>", unsafe_allow_html=True)
-        ccol2.image("./static/images/ascending_triangle.png")
+        # col2.markdown("#### Ascending Triangle")
+        col2.markdown("<h4 style='text-align: center;'>Ascending Triangle</h4>", unsafe_allow_html=True)
+        col2.image("./static/images/ascending_triangle.png")
 
-        col2.markdown("<h4 style='text-align: center;'>Rising Wedge</h4>", unsafe_allow_html=True)
-        ccol4.image("./static/images/rising_wedge.png")
-
-        col1, col2 = st.columns([1,1])
-        _, ccol2, _, ccol4, _ = st.columns([1,1,1,1,1])
-
-        col1.markdown("<h4 style='text-align: center;'>Descending Triangle</h4>", unsafe_allow_html=True) # can select color - ex)color: black;
-        ccol2.image('./static/images/descending_triangle.png')
+        # col4.markdown("#### Rising Wedge")
+        col4.markdown("<h4 style='text-align: center;'>Rising Wedge</h4>", unsafe_allow_html=True)
+        col4.image("./static/images/rising_wedge.png")
         
-        col2.markdown("<h4 style='text-align: center;'>Falling Wedge</h4>", unsafe_allow_html=True)
-        ccol4.image('./static/images/falling_wedge.png')
+        # col2.markdown("#### Descending Triangle")
+        col2.markdown("<h4 style='text-align: center;'>Descending Triangle</h4>", unsafe_allow_html=True) # can select color - ex)color: black;
+        col2.image('./static/images/descending_triangle.png')
         
-        col1, col2 = st.columns([1,1])
-        _, ccol2, _, ccol4, _ = st.columns([1,1,1,1,1])
+        # col4.markdown("#### Falling Wedge")
+        col4.markdown("<h4 style='text-align: center;'>Falling Wedge</h4>", unsafe_allow_html=True)
+        col4.image('./static/images/falling_wedge.png')
         
-        col1.markdown("<h4 style='text-align: center;'>Symmetric Triangle</h4>", unsafe_allow_html=True)
-        ccol2.image('./static/images/symmetrical_triangle.png')
+        # col2.markdown("#### Symmetric Triangle")
+        col2.markdown("<h4 style='text-align: center;'>Symmetric Triangle</h4>", unsafe_allow_html=True)
+        col2.image('./static/images/symmetrical_triangle.png')
     
     # Candlestick Chart 그리기
     df2 = df.copy()

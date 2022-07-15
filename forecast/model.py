@@ -128,7 +128,7 @@ def linear_space(backcast_length, forecast_length, is_forecast=True):
 class Block(nn.Module):
 
     def __init__(self, units, thetas_dim, device, backcast_length=10, forecast_length=5, share_thetas=False,
-                 nb_harmonics=None, dropout_rate=0.1):
+                 nb_harmonics=None, dropout_rate=0.2):
         super(Block, self).__init__()
         self.units = units
         self.thetas_dim = thetas_dim
@@ -151,10 +151,11 @@ class Block(nn.Module):
 
     def forward(self, x):
         x = squeeze_last_dim(x)
-        x = F.relu(self.fc1(x.to(self.device))) 
+        x = F.relu(self.fc1(x.to(self.device)))  
         x = F.relu(self.fc2(x))
         x = self.dropout(x)  # add dropout 
         x = F.relu(self.fc3(x))
+        x = self.dropout(x)  # add dropout 
         x = F.relu(self.fc4(x))
         return x
 

@@ -3,3 +3,11 @@ __pycache__/
 *$py.class
 .DS_Store
 backend/TS-Serving.txt
+
+backend/main_gh.py
+backend/test.py
+forecast/Nbeats_Final_Predict.ipynb
+frontend/pages/Model copy 2.py
+frontend/pages/Model.py
+frontend/pages/model_page_v2_b.py
+*.pt
