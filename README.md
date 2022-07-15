@@ -49,7 +49,7 @@ python backend/main.py
 ```
 streamlit run frontend/main_page.py
 ```
-_서버 배포 후 수정 + Demo  예정_
+_서버 배포 후 수정할 예정_
 
 
 # Demo - _이미지 더 나은 걸로 수정할 예정_
