@@ -49,14 +49,16 @@ python backend/main.py
 ```
 streamlit run frontend/main_page.py
 ```
-_서버 배포 후 수정할 예정_
 
 
-# Demo - _이미지 더 나은 걸로 수정할 예정_
+# Demo
 ## Pattern Recognition
-![image](https://user-images.githubusercontent.com/56261032/179201735-bde0d2fa-b362-46a2-b07c-883c0bb58bad.png)
+<img width="958" alt="image" src="https://user-images.githubusercontent.com/56261032/179317219-20da2ccc-c2bc-44fb-b16a-074de1039471.png">
+
+### XAI
+<img width="958" alt="image" src="https://user-images.githubusercontent.com/56261032/179317117-8118b7e7-d5ab-48e2-9c71-d8cf3bf74156.png">
 
 
 ## Forecasting Bitcoin Price
-![image](https://user-images.githubusercontent.com/56261032/179201568-cfd22417-06fc-472d-b251-fa17eda5d3ff.png)
+<img width="945" alt="image" src="https://user-images.githubusercontent.com/56261032/179317333-de1e1cf4-88b6-4bb0-989e-8d9a3c69354c.png">
 
